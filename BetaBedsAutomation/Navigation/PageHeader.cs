@@ -83,6 +83,8 @@ namespace BetaBedsAutomation
 
         internal static void SwitchTab()
         {
+            //Driver.Wait(TimeSpan.FromSeconds(1));
+            Driver.WaitForAjax();
             ReadOnlyCollection<String> browserTabs = Driver.Instance.WindowHandles; // get all window handles
             String newTab = browserTabs[(browserTabs.Count() - 1)];
             Driver.Instance.SwitchTo().Window(newTab);
@@ -90,6 +92,7 @@ namespace BetaBedsAutomation
 
         internal static void ClosePreviousAndSwitchTab()
         {
+            Driver.WaitForAjax();
             ReadOnlyCollection<String> browserTabs = Driver.Instance.WindowHandles; // get all window handles
             foreach (string tab in browserTabs)
             {

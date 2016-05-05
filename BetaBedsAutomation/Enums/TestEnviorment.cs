@@ -8,6 +8,7 @@ namespace BetaBedsAutomation.Enums
 {
     public enum TestEnvironment
     {
+        Custom,
         Local,
         Dev,
         QA,

@@ -73,7 +73,31 @@ namespace BetaBedsTests.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("firefox")]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool SeleniumExecuteLocally {
+            get {
+                return ((bool)(this["SeleniumExecuteLocally"]));
+            }
+            set {
+                this["SeleniumExecuteLocally"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://local.betabeds.com/")]
+        public string CustomURL {
+            get {
+                return ((string)(this["CustomURL"]));
+            }
+            set {
+                this["CustomURL"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("chrome")]
         public string SeleniumBrowser {
             get {
                 return ((string)(this["SeleniumBrowser"]));
@@ -86,12 +110,12 @@ namespace BetaBedsTests.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool SeleniumExecuteLocally {
+        public bool ProxyEnabled {
             get {
-                return ((bool)(this["SeleniumExecuteLocally"]));
+                return ((bool)(this["ProxyEnabled"]));
             }
             set {
-                this["SeleniumExecuteLocally"] = value;
+                this["ProxyEnabled"] = value;
             }
         }
     }

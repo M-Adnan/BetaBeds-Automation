@@ -29,12 +29,12 @@ namespace BetaBedsAutomation
         }
 
 
-        public static void GoTo(TestEnvironment env)
+        public static void GoTo(TestEnvironment env, string customUrl)
         {
             switch (env)
             {
                 case TestEnvironment.Local:
-                    Driver.Instance.Navigate().GoToUrl("http://trunk.betabeds.com");
+                    Driver.Instance.Navigate().GoToUrl(customUrl);
                     break;
 
                 case TestEnvironment.Dev:
@@ -49,12 +49,12 @@ namespace BetaBedsAutomation
                     Driver.Instance.Navigate().GoToUrl("http://staging.betabeds.com");
                     break;
 
-
                 case TestEnvironment.Live:
                     Driver.Instance.Navigate().GoToUrl("http://betabeds.com");
                     break;
             }
         }
+
 
         public static LoginCommand LoginAs(string userName)
         {

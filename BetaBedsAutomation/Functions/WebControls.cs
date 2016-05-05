@@ -82,6 +82,7 @@ namespace BetaBedsAutomation
             //click on checkin input box
             var checkinDatePicker = Driver.Instance.FindElement(By.Id(elementId));
             checkinDatePicker.Click();
+            Driver.WaitForAjax();
 
             var monthYearCal = Driver.Instance.FindElement(By.XPath(String.Format("{0}/div[2]/table/thead/tr[1]/th[2]", dropdown)));
 

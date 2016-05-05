@@ -29,7 +29,7 @@ namespace BetaBedsAutomation
             }
         }
 
-        public static void Initialise(string TestingEnviorment, bool SeleniumExecuteLocally, string SeleniumBrowser, string SeleniumRemoteServerURL, string httpProxy, int httpPort)
+        public static void Initialise(string TestingEnviorment, bool SeleniumExecuteLocally, string SeleniumBrowser, string SeleniumRemoteServerURL, bool ProxyEnabled, string httpProxy, int httpPort)
         {
 
             if (SeleniumExecuteLocally)
@@ -38,7 +38,7 @@ namespace BetaBedsAutomation
                 { 
                     case "firefox":
                         FirefoxProfile firefoxProfile = new FirefoxProfile();
-                        if (httpProxy != null || httpProxy != string.Empty)
+                        if (ProxyEnabled)
                         {
                             firefoxProfile.SetPreference("network.proxy.type", 1);
                             firefoxProfile.SetPreference("network.proxy.http", httpProxy);
@@ -46,19 +46,20 @@ namespace BetaBedsAutomation
                         }
                         Instance = new FirefoxDriver(firefoxProfile);
                         SetDefaultImplicitWait(5);
-                        Instance.Manage().Window.Maximize();
+                        
+                        //Instance.Manage().Window.Maximize();
                         break;
 
                     case "chrome":
                         ChromeOptions chromeProfile = new ChromeOptions();
                         Proxy proxy = new Proxy();
-                        if (httpProxy != null || httpProxy != string.Empty)
+                        if (ProxyEnabled)
                         {
                             proxy.HttpProxy = string.Format("{0}:{1}", httpProxy, httpPort);
                             chromeProfile.Proxy = proxy;
                         }
                         chromeProfile.AddArgument("ignore-certificate-errors");
-                        Instance = new ChromeDriver("\\Drivers\\",chromeProfile);
+                        Instance = new ChromeDriver("C:\\SeleniumWebDrivers\\Chrome 2.21\\", chromeProfile);
                         SetDefaultImplicitWait(5);
                         Instance.Manage().Window.Maximize();
                         break;
@@ -75,7 +76,7 @@ namespace BetaBedsAutomation
                 {
                     case "firefox":
                         Proxy firefoxProxy = new Proxy();
-                        if (httpProxy != null || httpProxy != string.Empty)
+                        if (ProxyEnabled)
                         {
                             firefoxProxy.HttpProxy = string.Format("{0}:{1}", httpProxy, httpPort);
                         }
@@ -90,7 +91,7 @@ namespace BetaBedsAutomation
                         break;
                     case "chrome":
                         Proxy chromeProxy = new Proxy();
-                        if (httpProxy != null || httpProxy != string.Empty)
+                        if (ProxyEnabled)
                         {
                             chromeProxy.HttpProxy = string.Format("{0}:{1}", httpProxy, httpPort);
                         }
@@ -104,7 +105,7 @@ namespace BetaBedsAutomation
                         break;
                     case "ie":
                         Proxy ieProxy = new Proxy();
-                        if (httpProxy != null || httpProxy != string.Empty)
+                        if (ProxyEnabled)
                         {
                             ieProxy.HttpProxy = string.Format("{0}:{1}", httpProxy, httpPort);
                         }
@@ -122,7 +123,7 @@ namespace BetaBedsAutomation
 
         public static void Close()
         {      
-            Instance.Quit();
+            Driver.Instance.Quit();
         }
 
 

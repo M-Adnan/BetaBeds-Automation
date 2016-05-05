@@ -7,6 +7,7 @@ using OpenQA.Selenium;
 using System.Collections.ObjectModel;
 using BetaBedsAutomation.Navigation;
 
+
 namespace BetaBedsAutomation
 {
     public class HomePage
@@ -17,13 +18,12 @@ namespace BetaBedsAutomation
             {
                 try
                 {
-                    return Driver.Instance.FindElement(By.CssSelector("div.splash-header h1.splash-heading")).Displayed;
+                    return Driver.FindElementWithTimeout(By.Id("homepage"),60,"Home page not displayed in 60 secs").Displayed;
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     return false;
                 }
-
             }
         }
 
@@ -107,16 +107,22 @@ namespace BetaBedsAutomation
             if (toDate != null) WebControls.SelectDateBox("toDate", "/html/body/div[3]", toDate); ;
 
             PassangerPopUpBox.Open();
+
             foreach (Room room in this.rooms)
             {
                 if (this.rooms.IndexOf(room) > 0) PassangerPopUpBox.ClickAddAnotherRoom();
-                if (room.noOfAdults != null) PassangerPopUpBox.SelectAdults(room.noOfAdults, this.rooms.IndexOf(room));
-                if (room.noOfChildren != null) PassangerPopUpBox.SelectChildren(room.noOfChildren, room.childrenAges, this.rooms.IndexOf(room));
+                if (room.noOfAdults != 0) PassangerPopUpBox.SelectAdults(room.noOfAdults, this.rooms.IndexOf(room));
+                if (room.noOfChildren != 0) PassangerPopUpBox.SelectChildren(room.noOfChildren, room.childrenAges, this.rooms.IndexOf(room));
             }
             PassangerPopUpBox.SaveChanges();
 
             var searchButton = Driver.Instance.FindElement(By.Id("searchFormSubmitButton"));
             searchButton.Click();
+        }
+
+        internal void searchProcess()
+        {
+ 
         }
     }
 }

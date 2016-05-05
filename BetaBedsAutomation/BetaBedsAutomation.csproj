@@ -46,16 +46,27 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataGeneration\AccommodationResultPageRnd.cs" />
+    <Compile Include="Enums\TestEnviorment.cs" />
     <Compile Include="Functions\Calendar.cs" />
+    <Compile Include="Navigation\PageHeader.cs" />
     <Compile Include="Navigation\PassangerPopUpBox.cs" />
+    <Compile Include="Pages\AccommodationResultsPage.cs" />
+    <Compile Include="Pages\EstablishmentPage.cs" />
+    <Compile Include="Pages\ManageBookingsPage.cs" />
+    <Compile Include="Pages\PaymentPage.cs" />
     <Compile Include="Selenium\Driver.cs" />
     <Compile Include="Pages\HomePage.cs" />
     <Compile Include="Pages\LoginPage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Functions\WebControls.cs" />
+    <Compile Include="Workflows\BookingCreator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Drivers\chromedriver.exe" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

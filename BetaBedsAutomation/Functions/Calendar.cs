@@ -31,11 +31,19 @@ namespace BetaBedsAutomation
             return lastCheckInDate;
         }
 
-        public static string PickRandomCheckOutDate()
+        public static string PickRandomCheckOutDate(int upperlimit=0)
         {
-            DateTime StartDate = Convert.ToDateTime(lastCheckInDate).AddDays(1);
-            DateTime EndDate = StartDate.AddDays(random.Next(5, 9));
-            return EndDate.ToShortDateString();
+            DateTime StartDate = Convert.ToDateTime(lastCheckInDate);//.AddDays(1);
+            if (upperlimit != 0)
+            {
+                DateTime EndDate = StartDate.AddDays(upperlimit);
+                return EndDate.ToShortDateString();
+            }
+            else
+            {
+                DateTime EndDate = StartDate.AddDays(random.Next(5, 9));
+                return EndDate.ToShortDateString();
+            }
         }
     }
 }

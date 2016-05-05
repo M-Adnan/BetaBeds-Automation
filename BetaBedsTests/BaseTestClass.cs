@@ -1,32 +1,31 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 using BetaBedsAutomation;
+using BetaBedsTests.Properties;
+using NUnit.Framework;
+using BetaBedsAutomation.Enums;
 
 namespace BetaBedsTests
 {
-    [TestClass]
+    [TestFixture]
     public class BaseTestClass
     {
-        [TestInitialize]
+        [SetUp]
         public void Initialise()
         {
-            Driver.Initialise();
+            Driver.Initialise(Settings.Default.TestingEnvironment, Settings.Default.SeleniumExecuteLocally, Settings.Default.SeleniumBrowser, Settings.Default.SeleniumRemoteServerURL, Settings.Default.HttpProxy, Settings.Default.HttpPort);
 
-            LoginPage.GoTo();
+            LoginPage.GoTo((TestEnvironment)Enum.Parse(typeof(TestEnvironment), Settings.Default.TestingEnvironment));
 
             LoginPage.LoginAs("venkatay").WithPassword("password").Login();
 
             Assert.IsTrue(HomePage.IsDisplayed, "Failed to Login.");
         }
 
-        [TestCleanup]
+
+        [TearDown]
         public void Cleanup()
         {
-            //Driver.Close();
+            Driver.Close();
         }
     }
 }

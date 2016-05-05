@@ -1,13 +1,13 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using BetaBedsAutomation;
 
 namespace BetaBedsTests
 {
-    [TestClass]
+    [TestFixture]
     public class LoginTest : BaseTestClass
     {
-        [TestMethod]
+        [Test]
         public void User_Successful_Login()
         {
             Assert.IsTrue(HomePage.IsDisplayed,"Failed to Login.");

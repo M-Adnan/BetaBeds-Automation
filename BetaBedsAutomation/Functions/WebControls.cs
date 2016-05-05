@@ -35,16 +35,16 @@ namespace BetaBedsAutomation
             if (useBackspace)
             {
                 input.SendKeys(Keys.Backspace);
+                Driver.Wait(TimeSpan.FromSeconds(1));
             }
             else
             {
                 input.Clear();
                 input.SendKeys(userInput);
+                Driver.Wait(TimeSpan.FromSeconds(1));
             }
-
-            Driver.Wait(TimeSpan.FromSeconds(1));
             
-            if (Driver.Instance.FindElement(By.Id(panelID)).Displayed)
+            if (Driver.IsElementDisplayed(By.Id(panelID)))
             {
                 IWebElement dropDown = Driver.Instance.FindElement(By.Id(panelID));
                 IWebElement dropDownContainer = dropDown.FindElement(By.XPath("../ul"));
@@ -111,18 +111,19 @@ namespace BetaBedsAutomation
         private static void SelectDateBoxDay(string elementName, string dropdown, string date)
         {
             //select the date
-            ReadOnlyCollection<IWebElement> calDatesTr = Driver.Instance.FindElements(By.XPath(string.Format("{0}/div[2]/table/tbody/tr", dropdown)));
+            ReadOnlyCollection<IWebElement> calDatesTr = null;
+            Driver.NoWait(() => calDatesTr = Driver.Instance.FindElements(By.XPath(string.Format("{0}/div[2]/table/tbody/tr", dropdown))));
             string[] splitDate = date.Split('/');
             splitDate[0] = splitDate[0].TrimStart('0');
             foreach (IWebElement dateElement in calDatesTr)
             {
-                Driver.TurnOffWait();
-                ReadOnlyCollection<IWebElement> calDatesTd1 = dateElement.FindElements(By.CssSelector("td[class='day'],td[class='day active']"));
+                
+                ReadOnlyCollection<IWebElement> calDatesTd1 = null;
+                Driver.NoWait(() => calDatesTd1 = dateElement.FindElements(By.CssSelector("td[class='day'],td[class='day active']")));
                 IWebElement td = calDatesTd1.FirstOrDefault(i => i.Text == splitDate[0]);
                 if (td != null)
                 {
                     td.Click();
-                    Driver.TurnOnWait();
                     return;
                 }
             }

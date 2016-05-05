@@ -4,8 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using OpenQA.Selenium.Firefox;
+using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium;
 using System.Threading;
+using OpenQA.Selenium.Remote;
+using OpenQA.Selenium.Support.UI;
+using System.Collections.ObjectModel;
+
 
 namespace BetaBedsAutomation
 {
@@ -13,6 +18,8 @@ namespace BetaBedsAutomation
     {
         public static IWebDriver Instance { get; set; }
         public static bool WaitOff { get; internal set; }
+        public static int DefaultImplicitWait { get; internal set; }
+        internal static Random Random = new Random();
 
         public static string BaseAddress
         {
@@ -22,27 +29,134 @@ namespace BetaBedsAutomation
             }
         }
 
-        public static void Initialise()
+        public static void Initialise(string TestingEnviorment, bool SeleniumExecuteLocally, string SeleniumBrowser, string SeleniumRemoteServerURL, string httpProxy, int httpPort)
         {
-            FirefoxProfile profile = new FirefoxProfile();
-            profile.SetPreference("network.proxy.type", 1);
-            profile.SetPreference("network.proxy.http", "52.16.27.130");
-            profile.SetPreference("network.proxy.http_port", 3128);
 
-            Instance = new FirefoxDriver(profile);
-            //Instance.Manage().Timeouts().ImplicitlyWait(TimeSpan.FromSeconds(5));
-            Instance.Manage().Window.Maximize();
+            if (SeleniumExecuteLocally)
+            {
+                switch (SeleniumBrowser.Trim().ToLower())
+                { 
+                    case "firefox":
+                        FirefoxProfile firefoxProfile = new FirefoxProfile();
+                        if (httpProxy != null || httpProxy != string.Empty)
+                        {
+                            firefoxProfile.SetPreference("network.proxy.type", 1);
+                            firefoxProfile.SetPreference("network.proxy.http", httpProxy);
+                            firefoxProfile.SetPreference("network.proxy.http_port", httpPort);
+                        }
+                        Instance = new FirefoxDriver(firefoxProfile);
+                        SetDefaultImplicitWait(5);
+                        Instance.Manage().Window.Maximize();
+                        break;
+
+                    case "chrome":
+                        ChromeOptions chromeProfile = new ChromeOptions();
+                        Proxy proxy = new Proxy();
+                        if (httpProxy != null || httpProxy != string.Empty)
+                        {
+                            proxy.HttpProxy = string.Format("{0}:{1}", httpProxy, httpPort);
+                            chromeProfile.Proxy = proxy;
+                        }
+                        chromeProfile.AddArgument("ignore-certificate-errors");
+                        Instance = new ChromeDriver("\\Drivers\\",chromeProfile);
+                        SetDefaultImplicitWait(5);
+                        Instance.Manage().Window.Maximize();
+                        break;
+                    default:
+                        throw new Exception(string.Format("Browser {0} unknown", SeleniumBrowser));
+                }
+            }
+            else
+            {
+                string randomBrowser = PickRandomBrowser();
+                string randomPlatform = PickRandomPlatform();
+
+                switch (randomBrowser.Trim().ToLower())
+                {
+                    case "firefox":
+                        Proxy firefoxProxy = new Proxy();
+                        if (httpProxy != null || httpProxy != string.Empty)
+                        {
+                            firefoxProxy.HttpProxy = string.Format("{0}:{1}", httpProxy, httpPort);
+                        }
+                        DesiredCapabilities firefoxCapability = DesiredCapabilities.Firefox();
+                        firefoxCapability.SetCapability("browserName", "firefox");
+                        firefoxCapability.SetCapability("platform", randomPlatform);
+                        firefoxCapability.SetCapability(CapabilityType.Proxy, firefoxProxy);
+                        Instance = new RemoteWebDriver(new Uri(SeleniumRemoteServerURL), firefoxCapability);
+                        Driver.Wait(TimeSpan.FromSeconds(1));
+                        Instance.Manage().Window.Maximize();
+                        SetDefaultImplicitWait(5);
+                        break;
+                    case "chrome":
+                        Proxy chromeProxy = new Proxy();
+                        if (httpProxy != null || httpProxy != string.Empty)
+                        {
+                            chromeProxy.HttpProxy = string.Format("{0}:{1}", httpProxy, httpPort);
+                        }
+                        DesiredCapabilities chromeCapability = DesiredCapabilities.Chrome();
+                        chromeCapability.SetCapability("browserName", "chrome");
+                        chromeCapability.SetCapability("platform", randomPlatform);
+                        chromeCapability.SetCapability(CapabilityType.Proxy, chromeProxy);
+                        Instance = new RemoteWebDriver(new Uri(SeleniumRemoteServerURL), chromeCapability);
+                        Instance.Manage().Timeouts().ImplicitlyWait(TimeSpan.FromSeconds(5));
+                        Instance.Manage().Window.Maximize();
+                        break;
+                    case "ie":
+                        Proxy ieProxy = new Proxy();
+                        if (httpProxy != null || httpProxy != string.Empty)
+                        {
+                            ieProxy.HttpProxy = string.Format("{0}:{1}", httpProxy, httpPort);
+                        }
+                        DesiredCapabilities ieCapability = DesiredCapabilities.InternetExplorer();
+                        ieCapability.SetCapability("browserName", "internet explorer");
+                        ieCapability.SetCapability("platform", randomPlatform);
+                        ieCapability.SetCapability(CapabilityType.Proxy, ieProxy);
+                        Instance = new RemoteWebDriver(new Uri(SeleniumRemoteServerURL), ieCapability);
+                        SetDefaultImplicitWait(5);
+                        Instance.Manage().Window.Maximize();
+                        break;
+                }
+            }
         }
 
         public static void Close()
+        {      
+            Instance.Quit();
+        }
+
+
+
+
+
+
+
+
+
+
+
+        internal static void SetDefaultImplicitWait()
         {
-            Instance.Close();
+            if (DefaultImplicitWait == 0)
+            {
+                Instance.Manage().Timeouts().ImplicitlyWait(TimeSpan.FromSeconds(5));
+            }
+            else
+            {
+                Instance.Manage().Timeouts().ImplicitlyWait(TimeSpan.FromSeconds(DefaultImplicitWait));
+            }
+
+        }
+
+        internal static void SetDefaultImplicitWait(int seconds)
+        {
+            Instance.Manage().Timeouts().ImplicitlyWait(TimeSpan.FromSeconds(seconds));
         }
 
         internal static void TurnOffWait()
         {
             if (Driver.WaitOff) return;
-            Instance.Manage().Timeouts().ImplicitlyWait(TimeSpan.FromSeconds(0));
+            Driver.Instance.Manage().Timeouts().ImplicitlyWait(TimeSpan.FromSeconds(0));
             Driver.WaitOff = true;
         }
 
@@ -50,35 +164,104 @@ namespace BetaBedsAutomation
         {
             if (Driver.WaitOff)
             {
-                Instance.Manage().Timeouts().ImplicitlyWait(TimeSpan.FromSeconds(10));
+                if (DefaultImplicitWait == 0)
+                {
+                    Driver.Instance.Manage().Timeouts().ImplicitlyWait(TimeSpan.FromSeconds(5));
+                }
+                else
+                {
+                    Driver.Instance.Manage().Timeouts().ImplicitlyWait(TimeSpan.FromSeconds(DefaultImplicitWait));
+                }
                 Driver.WaitOff = false;
             }
         }
 
-        internal static void Wait(TimeSpan timeSpan)
+        public static IWebElement FindElementWithTimeout(By by, int timeoutInSeconds, string errMsg)
         {
-            Thread.Sleep((int)timeSpan.TotalSeconds*1000);
-        }
-
-        /*public static bool IsElementDisplayedBy(this IWebDriver webdriver, By by)
-        {
+            Driver.TurnOffWait();
+            var wait = new WebDriverWait(Instance, TimeSpan.FromSeconds(timeoutInSeconds));
             try
             {
-                return webdriver.FindElement(by).Displayed;
+                var webelement = wait.Until(drv => drv.FindElement(by));
+                Driver.TurnOnWait();
+                return webelement;
+            }
+            catch
+            {
+                throw new Exception(errMsg);
+            }
+        }
+
+        public static ReadOnlyCollection<IWebElement> FindElementsWithTimeout(By by, int timeoutInSeconds)
+        {
+            Driver.TurnOffWait();
+            var wait = new WebDriverWait(Instance, TimeSpan.FromSeconds(timeoutInSeconds));
+            ReadOnlyCollection<IWebElement> webelements = wait.Until(drv => drv.FindElements(by));
+            Driver.TurnOnWait();
+            return webelements;
+        }
+
+        public static void WaitForAjax()
+        {
+            while (!(bool)(Driver.Instance as IJavaScriptExecutor).ExecuteScript("return jQuery.active == 0")) // Handle timeout somewhere
+            {
+                Thread.Sleep(100);
+            }
+        }
+
+        public static bool IsElementDisplayed(By by)
+        {
+            Driver.WaitForAjax();
+            try
+            {
+                return Instance.FindElement(by).Displayed;
             }
             catch
             {
             }
-
             return false;
-        }*/
+        }
 
-        /*public static void WaitForAjax(this IWebDriver value)
+        public static void NoWait(Action action)
         {
-            while (!(bool)(value as IJavaScriptExecutor).ExecuteScript("return jQuery.active == 0")) // Handle timeout somewhere
+            TurnOffWait();
+            action();
+            TurnOnWait();
+        }
+
+
+        internal static void Wait(TimeSpan timeSpan)
+        {
+            Thread.Sleep((int)timeSpan.TotalSeconds * 1000);
+        }
+
+        public static string PickRandomBrowser()
+        {
+            List<String> BrowserList = new List<string>
             {
-                Thread.Sleep(100);
-            }
-        }*/
+                "firefox","chrome"
+            };
+
+            int index = Random.Next(BrowserList.Count);
+            string RandomBrowser = BrowserList[index];
+            return RandomBrowser;
+        }
+
+        public static string PickRandomPlatform()
+        {
+            List<String> PlatformList = new List<string>
+            {
+                "WIN10","WIN8_1"
+            };
+
+            int index = Random.Next(PlatformList.Count);
+            string RandomPlatform = PlatformList[index];
+            return RandomPlatform;
+        }
+
+        public static int PickRandomNumber(int minValue, int maxValue)
+        {
+            return Random.Next(minValue, maxValue);
+        }
     }
 }

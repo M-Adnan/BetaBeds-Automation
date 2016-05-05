@@ -5,14 +5,55 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using OpenQA.Selenium;
+using BetaBedsAutomation.Enums;
 
 namespace BetaBedsAutomation
 {
     public class LoginPage
     {
-        public static void GoTo()
+
+        public static bool IsDisplayed
         {
-            Driver.Instance.Navigate().GoToUrl(Driver.BaseAddress);
+            get
+            {
+                try
+                {
+                    return Driver.FindElementWithTimeout(By.Id("RememberMe"), 60, "Login page not displayed in 60 secs").Displayed;
+                }
+                catch (Exception)
+                {
+                    return false;
+                }
+
+            }
+        }
+
+
+        public static void GoTo(TestEnvironment env)
+        {
+            switch (env)
+            {
+                case TestEnvironment.Local:
+                    Driver.Instance.Navigate().GoToUrl("http://trunk.betabeds.com");
+                    break;
+
+                case TestEnvironment.Dev:
+                    Driver.Instance.Navigate().GoToUrl("http://trunk.betabeds.com");
+                    break;
+
+                case TestEnvironment.QA:
+                    Driver.Instance.Navigate().GoToUrl("http://qa.betabeds.com");
+                    break;
+
+                case TestEnvironment.Staging:
+                    Driver.Instance.Navigate().GoToUrl("http://staging.betabeds.com");
+                    break;
+
+
+                case TestEnvironment.Live:
+                    Driver.Instance.Navigate().GoToUrl("http://betabeds.com");
+                    break;
+            }
         }
 
         public static LoginCommand LoginAs(string userName)

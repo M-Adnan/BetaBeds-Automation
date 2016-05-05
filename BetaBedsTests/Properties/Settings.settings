@@ -1,0 +1,24 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="BetaBedsTests.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="SeleniumRemoteServerURL" Type="System.String" Scope="User">
+      <Value Profile="(Default)">http://192.168.2.35:4444/wd/hub</Value>
+    </Setting>
+    <Setting Name="HttpProxy" Type="System.String" Scope="User">
+      <Value Profile="(Default)">52.16.27.130</Value>
+    </Setting>
+    <Setting Name="HttpPort" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">3128</Value>
+    </Setting>
+    <Setting Name="TestingEnvironment" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Dev</Value>
+    </Setting>
+    <Setting Name="SeleniumBrowser" Type="System.String" Scope="User">
+      <Value Profile="(Default)">firefox</Value>
+    </Setting>
+    <Setting Name="SeleniumExecuteLocally" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

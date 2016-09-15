@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using OpenQA.Selenium;
 using System.Collections.ObjectModel;
+using BetaBedsAutomation.Data;
+using BetaBedsAutomation.Functions;
 
 namespace BetaBedsAutomation
 {
@@ -16,11 +18,15 @@ namespace BetaBedsAutomation
             {
                 try
                 {
-                    return Driver.FindElementWithTimeout(By.Id("manage-bookings"), 60, "Manage booking page not displayed in 60 secs").Displayed;
+                    return Driver.FindElementWithTimeout(By.Id("manage-bookings"), 40, "Manage booking page not displayed in 40 secs").Displayed;
                 }
                 catch (Exception)
                 {
                     return false;
+                }
+                finally
+                {
+                    Guids.pageUrl = PageFunctions.GetUrl();
                 }
 
             }

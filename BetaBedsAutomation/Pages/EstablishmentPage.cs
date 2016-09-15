@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using OpenQA.Selenium;
 using BetaBedsAutomation;
 using System.Collections.ObjectModel;
+using BetaBedsAutomation.Data;
+using BetaBedsAutomation.Functions;
 
 namespace BetaBedsAutomation
 {
@@ -17,11 +19,24 @@ namespace BetaBedsAutomation
             {
                 try
                 {
-                    return Driver.FindElementWithTimeout(By.Id("establishmentpage"), 60, "Establishment page not displayed in 60 secs").Displayed;
+                    if (Driver.FindElementWithTimeout(By.Id("establishmentpage"), 40, "Establishment page not displayed in 40 secs").Displayed)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+
                 }
                 catch (Exception)
                 {
                     return false;
+                }
+                finally
+                {
+                    Guids.SearchGuid = PageFunctions.GetSearchGUID();
+                    Guids.pageUrl = PageFunctions.GetUrl();
                 }
             }
         }
@@ -48,7 +63,6 @@ namespace BetaBedsAutomation
         {
             IWebElement roomPanel = GetAvailableRoomPanel(availableRoom);
             IWebElement roomButton = roomPanel.FindElement(By.CssSelector("[class='select-room-wrapper']"));
-            //IWebElement roomButton = roomButtonDiv
             return roomButton;
         }
 
@@ -69,6 +83,12 @@ namespace BetaBedsAutomation
             Driver.Instance.FindElement(By.CssSelector("[class='rooms-wrapper']")) ;
             var roomsPanel = Driver.Instance.FindElement(By.CssSelector("[class='rooms-wrapper']"));
             return roomsPanel;
+        }
+
+        internal static void WaitForLoad()
+        {
+            Driver.WaitForAjax();
+            Driver.FindElementWithTimeout(By.Id("establishmentpage"), 40, "Establishment page not displayed in 40 secs");
         }
     }
 
@@ -134,15 +154,29 @@ namespace BetaBedsAutomation
                     continueButton.Click();
                     try
                     {
-                        PaymentPage.WaitForLoad();
+                        PageFunctions.WaitForLoad("agentpaymentpage","Payment page not displayed in 40 secs");
                     }
                     catch (Exception ex)
                     {
-                        if (Driver.IsElementDisplayed(By.CssSelector("div.box-header h4[class='box-heading']")))
-                            throw new Exception(string.Format("Room Number {0} selected room is no longer available.", room.roomNumber));
-                        if (Driver.IsElementDisplayed(By.CssSelector("div.box-header h4[class='alert alert-warning hidden']")))
-                            throw new Exception("Selected Hotel is fully booked for the dates selected.");
-                        throw ex;      
+                        Guids.SearchGuid = PageFunctions.GetSearchGUID();
+                        Guids.pageUrl = PageFunctions.GetUrl();
+                        ReadOnlyCollection<IWebElement> ErrMsgsDivs = Driver.Instance.FindElements(By.CssSelector("div.box-header h4.box-heading"));
+                        IWebElement displayedErrMsg;
+                        try
+                        {
+                            displayedErrMsg = ErrMsgsDivs.First(i => i.Displayed);
+                        }
+                        catch
+                        {
+                            throw ex;
+                        }
+                        if (displayedErrMsg.Text.Trim() == "Hotel unavailable")
+                            throw new Exception(string.Format("Selected Hotel room(s) are fully booked for the dates selected."));
+                        if (displayedErrMsg.Text.Trim() == "No results found")
+                            throw new Exception(string.Format("For Selected Hotel 'No results found' error message is displayed."));
+                        if (displayedErrMsg.Text.Trim() == "Room unavailable")
+                            throw new Exception(string.Format("For Room Number {0} selected room {1} is no longer available.", room.roomNumber, room.availableRoomNumber));
+                        throw ex;   
                     }
                     
                 }

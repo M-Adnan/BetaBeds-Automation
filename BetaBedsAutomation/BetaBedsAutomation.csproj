@@ -47,8 +47,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataGeneration\AccommodationResultPageRnd.cs" />
+    <Compile Include="Data\Guids.cs" />
     <Compile Include="Enums\TestEnviorment.cs" />
     <Compile Include="Functions\Calendar.cs" />
+    <Compile Include="Functions\PageFunctions.cs" />
+    <Compile Include="Logger\ActionTypes.cs" />
+    <Compile Include="Logger\ILogger.cs" />
+    <Compile Include="Logger\Log4Net.cs" />
+    <Compile Include="Logger\LogAction.cs" />
     <Compile Include="Navigation\PageHeader.cs" />
     <Compile Include="Navigation\PassangerPopUpBox.cs" />
     <Compile Include="Pages\AccommodationResultsPage.cs" />
@@ -63,10 +69,17 @@
     <Compile Include="Workflows\BookingCreator.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="ClassDiagram1.cd" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Drivers\chromedriver.exe" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Logger4UITests\BetaBedsUITestLogger.csproj">
+      <Project>{6b5da21c-f66b-4371-83f0-cb4749c825dc}</Project>
+      <Name>BetaBedsUITestLogger</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

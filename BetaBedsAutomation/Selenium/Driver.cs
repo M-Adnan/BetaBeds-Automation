@@ -59,8 +59,9 @@ namespace BetaBedsAutomation
                             chromeProfile.Proxy = proxy;
                         }
                         chromeProfile.AddArgument("ignore-certificate-errors");
-                        Instance = new ChromeDriver("C:\\SeleniumWebDrivers\\Chrome 2.21\\", chromeProfile);
+                        Instance = new ChromeDriver("\\Drivers\\", chromeProfile);
                         SetDefaultImplicitWait(5);
+                        //Driver.Wait(TimeSpan())
                         Instance.Manage().Window.Maximize();
                         break;
                     default:
@@ -125,16 +126,6 @@ namespace BetaBedsAutomation
         {      
             Driver.Instance.Quit();
         }
-
-
-
-
-
-
-
-
-
-
 
         internal static void SetDefaultImplicitWait()
         {

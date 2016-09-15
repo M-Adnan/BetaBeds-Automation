@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using OpenQA.Selenium;
+using BetaBedsUITestLogger;
 
 namespace BetaBedsAutomation.Navigation
 {
@@ -11,12 +12,14 @@ namespace BetaBedsAutomation.Navigation
     {
         public static void Open()
         {
+            Logger.AddClickAction(" Travellers field");
             var passengersPopUpBox = Driver.Instance.FindElement(By.Id("passengers"));
             passengersPopUpBox.Click();
         }
 
         public static void SaveChanges()
         {
+            Logger.AddClickAction(" Save Changes button");
             IWebElement passangerButtonSet = Driver.Instance.FindElement(By.CssSelector("div.ui-dialog-buttonset button.btn"));
             IWebElement saveChangesButton = Driver.Instance.FindElement(By.XPath("//div/button[2]"));
             saveChangesButton.Click();
@@ -24,18 +27,31 @@ namespace BetaBedsAutomation.Navigation
 
         internal static void ClickAddAnotherRoom()
         {
+            Logger.AddClickAction(" Add Another Room button");
             var addAnotherRoomButton = Driver.Instance.FindElement(By.CssSelector("div.section a.ctx-add.btn.tertiary"));
             addAnotherRoomButton.Click();
         }
 
         internal static void SelectAdults(int noOfAdults, int roomIndex)
         {
+            Logger.AddSelectAction(noOfAdults, " adults for room ", roomIndex+1);
             if (noOfAdults < 1 || noOfAdults > 6) throw new ArgumentOutOfRangeException("adults", noOfAdults, "The number of adults must be between 1 and 6.");
             AddRemovePassangers(noOfAdults, roomIndex, 1);    
         }
 
         internal static void SelectChildren(int noOfChildren, int[] childrenAges, int roomIndex)
         {
+            string childrenAgesString = null;
+            Logger.AddSelectAction(noOfChildren, " child(rens) for room ", roomIndex+1);
+            foreach (int childage in childrenAges)
+            {
+                childrenAgesString += childage.ToString();
+                childrenAgesString += ",";
+
+            }
+
+            Logger.AddCustomMsg("Add the following child(rens) ages respectivley " + childrenAgesString);
+
             if (noOfChildren < 0 || noOfChildren > 4) throw new ArgumentOutOfRangeException("children", noOfChildren, "The number of children must be between 0 and 4.");
             if (childrenAges == null) throw new ArgumentNullException("childrenAges");
             if (noOfChildren != childrenAges.Length) throw new ArgumentException("children ages must have the same number of elements as number of children.");

@@ -5,6 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using OpenQA.Selenium;
 using System.Collections.ObjectModel;
+using BetaBedsAutomation.Data;
+using BetaBedsAutomation.Functions;
+using BetaBedsUITestLogger;
 
 namespace BetaBedsAutomation
 {
@@ -16,21 +19,25 @@ namespace BetaBedsAutomation
             {
                 try
                 {
-                    return Driver.FindElementWithTimeout(By.Id("accommodationresultspage"), 60, "Accommodation result page not displayed in 60 secs").Displayed;
+                    if (Driver.FindElementWithTimeout(By.Id("accommodationresultspage"), 40, "Accommodation result page not displayed in 40 secs").Displayed)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
                 }
                 catch (Exception)
                 {
-                    
                     return false;
                 }
+                finally
+                {
+                    Guids.SearchGuid = PageFunctions.GetSearchGUID();
+                    Guids.pageUrl = PageFunctions.GetUrl();
+                }
             }
-        }
-
-        private static string SaveSearchGUID()
-        {
-            string url = Driver.Instance.Url;
-            string searchID = url.Split(new char[] { '=', '&' })[1];
-            return searchID;
         }
 
         public static bool AreResultsDisplayed
@@ -63,8 +70,17 @@ namespace BetaBedsAutomation
         public static void ClickHotelNumber(int hotelNumber)
         {
             var hotelPanel = GetHotelPanel(hotelNumber);
-            var hotelNameLink = hotelPanel.FindElement(By.CssSelector("h2.establishment-heading a"));
+            IWebElement hotelNameLink = hotelPanel.FindElement(By.CssSelector("h2.establishment-heading a"));
+            Logger.AddClickAction(hotelNameLink.Text + " link");
             hotelNameLink.Click();
+        }
+
+        internal static void WaitForLoad()
+        {
+            Driver.WaitForAjax();
+            Guids.SearchGuid = PageFunctions.GetSearchGUID();
+            Guids.pageUrl = PageFunctions.GetUrl();
+            Driver.FindElementWithTimeout(By.Id("accommodationresultspage"), 40, "Accommodation result page not displayed in 40 secs"); 
         }
     }
 }

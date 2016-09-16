@@ -8,6 +8,7 @@ using BetaBedsAutomation;
 using System.Collections.ObjectModel;
 using BetaBedsAutomation.Data;
 using BetaBedsAutomation.Functions;
+using BetaBedsUITestLogger;
 
 namespace BetaBedsAutomation
 {
@@ -48,6 +49,7 @@ namespace BetaBedsAutomation
 
         internal static void SelectRoomTab(int roomNumber)
         {
+            Logger.AddSelectAction("room ",roomNumber," tab");
             var selectedRoom = Driver.Instance.FindElement(By.Id(string.Format("estab0-room-tab{0}", roomNumber)));
             selectedRoom.Click();
             Driver.WaitForAjax();
@@ -55,6 +57,7 @@ namespace BetaBedsAutomation
 
         internal static void SelectRoomByNumber(int availableRoom)
         {
+            Logger.AddSelectAction("room number ", availableRoom + 1, " from available rooms");
             IWebElement availableRoomButton = GetAvailableRoomButton(availableRoom);
             availableRoomButton.Click();
         }
@@ -89,6 +92,13 @@ namespace BetaBedsAutomation
         {
             Driver.WaitForAjax();
             Driver.FindElementWithTimeout(By.Id("establishmentpage"), 40, "Establishment page not displayed in 40 secs");
+        }
+
+        internal static void ClickContinueButton()
+        {
+            Logger.AddClickAction("Continue button");
+            var continueButton = Driver.Instance.FindElement(By.Id("continue-0"));
+            continueButton.Click();
         }
     }
 
@@ -150,8 +160,7 @@ namespace BetaBedsAutomation
                     if (room.availableRoomNumber != 0) EstablishmentPage.SelectRoomByNumber(room.availableRoomNumber);
                     Driver.WaitForAjax();
                     Driver.Wait(TimeSpan.FromSeconds(1));
-                    var continueButton = Driver.Instance.FindElement(By.Id("continue-0"));
-                    continueButton.Click();
+                    EstablishmentPage.ClickContinueButton();
                     try
                     {
                         PageFunctions.WaitForLoad("agentpaymentpage","Payment page not displayed in 40 secs");
@@ -177,8 +186,7 @@ namespace BetaBedsAutomation
                         if (displayedErrMsg.Text.Trim() == "Room unavailable")
                             throw new Exception(string.Format("For Room Number {0} selected room {1} is no longer available.", room.roomNumber, room.availableRoomNumber));
                         throw ex;   
-                    }
-                    
+                    }                    
                 }
                 else
                 {

@@ -24,21 +24,17 @@ namespace BetaBedsTests
         [Category("SmokeTest")]
         public void User_Successful_Login()
         {
-            Assert.IsTrue(LoginPage.IsDisplayed, "Login page wasn't displayed in 40 seconds");
-
-            LoginPage.LoginAs("venkatay").WithPassword("password").Login();
+            LoginPage.LoginAs("bijeshb").WithPassword("password").Login();
 
             Assert.IsTrue(HomePage.IsDisplayed, "Failed to Login.");
-
+            //Test Comment
         }
 
         [Test]
         [Category("SmokeTest")]
         public void Can_SearchAndBook_SingleRoom_Child_Destination_Palma_De_Mallorca_Mallorca_AdultsOnly()
         {
-            Assert.IsTrue(LoginPage.IsDisplayed, "Login page wasn't displayed in 40 seconds");
-
-            LoginPage.LoginAs("venkatay").WithPassword("password").Login();
+            LoginPage.LoginAs("bijeshb").WithPassword("password").Login();
             
             Assert.IsTrue(HomePage.IsDisplayed, "Failed to Login.");
 
@@ -63,9 +59,7 @@ namespace BetaBedsTests
         [Category("SmokeTest")]
         public void Can_SearchAndBook_SingleRoom_Child_Destination_Albufeira_Algarve_AdultsChildrenAndInfant()
         {
-            Assert.IsTrue(LoginPage.IsDisplayed, "Login page wasn't displayed in 40 seconds");
-
-            LoginPage.LoginAs("venkatay").WithPassword("password").Login();
+            LoginPage.LoginAs("bijeshb").WithPassword("password").Login();
 
             Assert.IsTrue(HomePage.IsDisplayed, "Failed to Login.");
 
@@ -90,9 +84,7 @@ namespace BetaBedsTests
         [Category("SmokeTest")]
         public void Can_SearchAndBook_SingleRoom_Parent_Destination_Algarve_AdultsChildrenAndInfant()
         {
-            Assert.IsTrue(LoginPage.IsDisplayed, "Login page wasn't displayed in 40 seconds");
-
-            LoginPage.LoginAs("venkatay").WithPassword("password").Login();
+            LoginPage.LoginAs("bijeshb").WithPassword("password").Login();
 
             Assert.IsTrue(HomePage.IsDisplayed, "Failed to Login.");
 
@@ -119,7 +111,7 @@ namespace BetaBedsTests
         {
             Assert.IsTrue(LoginPage.IsDisplayed, "Login page wasn't displayed in 40 seconds");
 
-            LoginPage.LoginAs("venkatay").WithPassword("password").Login();
+            LoginPage.LoginAs("bijeshb").WithPassword("password").Login();
 
             Assert.IsTrue(HomePage.IsDisplayed, "Failed to Login.");
 
@@ -145,9 +137,7 @@ namespace BetaBedsTests
         [Category("SmokeTest")]
         public void Can_SearchAndBook_MultiRoom_Child_Destination_Costa_Adeje_Tenerife_AdultsChildrenAndInfant()
         {
-            Assert.IsTrue(LoginPage.IsDisplayed, "Login page wasn't displayed in 40 seconds");
-
-            LoginPage.LoginAs("venkatay").WithPassword("password").Login();
+            LoginPage.LoginAs("bijeshb").WithPassword("password").Login();
 
             Assert.IsTrue(HomePage.IsDisplayed, "Failed to Login.");
 
@@ -172,9 +162,7 @@ namespace BetaBedsTests
         [Category("SmokeTest")]
         public void Can_SearchAndBook_MultiRoom_Parent_Destination_Tenerife_AdultsChildrenAndInfant()
         {
-            Assert.IsTrue(LoginPage.IsDisplayed, "Login page wasn't displayed in 40 seconds");
-
-            LoginPage.LoginAs("venkatay").WithPassword("password").Login();
+            LoginPage.LoginAs("bijeshb").WithPassword("password").Login();
 
             Assert.IsTrue(HomePage.IsDisplayed, "Failed to Login.");
 
@@ -199,9 +187,7 @@ namespace BetaBedsTests
         [Category("SmokeTest")]
         public void Can_SearchAndBook_SingleRoom_Hotel_Hotel_Medano_Tenerife_AdultsChildrenAndInfant()
         {
-            Assert.IsTrue(LoginPage.IsDisplayed, "Login page wasn't displayed in 40 seconds");
-
-            LoginPage.LoginAs("venkatay").WithPassword("password").Login();
+            LoginPage.LoginAs("bijeshb").WithPassword("password").Login();
 
             Assert.IsTrue(HomePage.IsDisplayed, "Failed to Login.");
 
@@ -220,9 +206,7 @@ namespace BetaBedsTests
         [Category("SmokeTest")]
         public void Can_SearchAndBook_SingleRoom_Hotel_Eden_Resort_Algarve_AdultsChildrenAndInfant()
         {
-            Assert.IsTrue(LoginPage.IsDisplayed, "Login page wasn't displayed in 40 seconds");
-
-            LoginPage.LoginAs("venkatay").WithPassword("password").Login();
+            LoginPage.LoginAs("bijeshb").WithPassword("password").Login();
 
             Assert.IsTrue(HomePage.IsDisplayed, "Failed to Login.");
 
@@ -241,9 +225,7 @@ namespace BetaBedsTests
         [Category("SmokeTest")]
         public void Can_SearchAndBook_MultiRoom_Hotel_LaEstacion_Benidorm_AdultsChildrenAndInfant()
         {
-            Assert.IsTrue(LoginPage.IsDisplayed, "Login page wasn't displayed in 40 seconds");
-
-            LoginPage.LoginAs("venkatay").WithPassword("password").Login();
+            LoginPage.LoginAs("bijeshb").WithPassword("password").Login();
 
             Assert.IsTrue(HomePage.IsDisplayed, "Failed to Login.");
 
@@ -263,9 +245,7 @@ namespace BetaBedsTests
         [Category("SmokeTest")]
         public void Can_Navigateto_ManageBookings()
         {
-            Assert.IsTrue(LoginPage.IsDisplayed, "Login page wasn't displayed in 40 seconds");
-
-            LoginPage.LoginAs("venkatay").WithPassword("password").Login();
+            LoginPage.LoginAs("bijeshb").WithPassword("password").Login();
 
             Assert.IsTrue(HomePage.IsDisplayed, "Failed to Login.");
 
@@ -278,9 +258,7 @@ namespace BetaBedsTests
         [Category("SmokeTest")]
         public void Can_Navigatefrom_ManageBookings_toSearchAndBookSite()
         {
-            Assert.IsTrue(LoginPage.IsDisplayed, "Login page wasn't displayed in 40 seconds");
-
-            LoginPage.LoginAs("venkatay").WithPassword("password").Login();
+            LoginPage.LoginAs("bijeshb").WithPassword("password").Login();
 
             Assert.IsTrue(HomePage.IsDisplayed, "Failed to Login.");
 

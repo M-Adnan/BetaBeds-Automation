@@ -47,7 +47,7 @@ namespace BetaBedsAutomation
                         Instance = new FirefoxDriver(firefoxProfile);
                         SetDefaultImplicitWait(5);
                         
-                        //Instance.Manage().Window.Maximize();
+                        Instance.Manage().Window.Maximize();
                         break;
 
                     case "chrome":
@@ -70,10 +70,10 @@ namespace BetaBedsAutomation
             }
             else
             {
-                string randomBrowser = PickRandomBrowser();
-                string randomPlatform = PickRandomPlatform();
+                //string randomBrowser = PickRandomBrowser();
+                //string randomPlatform = PickRandomPlatform();
 
-                switch (randomBrowser.Trim().ToLower())
+                switch (SeleniumBrowser.Trim().ToLower())
                 {
                     case "firefox":
                         Proxy firefoxProxy = new Proxy();
@@ -83,7 +83,7 @@ namespace BetaBedsAutomation
                         }
                         DesiredCapabilities firefoxCapability = DesiredCapabilities.Firefox();
                         firefoxCapability.SetCapability("browserName", "firefox");
-                        firefoxCapability.SetCapability("platform", randomPlatform);
+                        //firefoxCapability.SetCapability("platform", "WIN8_1");
                         firefoxCapability.SetCapability(CapabilityType.Proxy, firefoxProxy);
                         Instance = new RemoteWebDriver(new Uri(SeleniumRemoteServerURL), firefoxCapability);
                         Driver.Wait(TimeSpan.FromSeconds(1));
@@ -98,7 +98,7 @@ namespace BetaBedsAutomation
                         }
                         DesiredCapabilities chromeCapability = DesiredCapabilities.Chrome();
                         chromeCapability.SetCapability("browserName", "chrome");
-                        chromeCapability.SetCapability("platform", randomPlatform);
+                        //chromeCapability.SetCapability("platform", "WIN10");
                         chromeCapability.SetCapability(CapabilityType.Proxy, chromeProxy);
                         Instance = new RemoteWebDriver(new Uri(SeleniumRemoteServerURL), chromeCapability);
                         Instance.Manage().Timeouts().ImplicitlyWait(TimeSpan.FromSeconds(5));
@@ -112,7 +112,7 @@ namespace BetaBedsAutomation
                         }
                         DesiredCapabilities ieCapability = DesiredCapabilities.InternetExplorer();
                         ieCapability.SetCapability("browserName", "internet explorer");
-                        ieCapability.SetCapability("platform", randomPlatform);
+                        //ieCapability.SetCapability("platform", "WIN8_1");
                         ieCapability.SetCapability(CapabilityType.Proxy, ieProxy);
                         Instance = new RemoteWebDriver(new Uri(SeleniumRemoteServerURL), ieCapability);
                         SetDefaultImplicitWait(5);
@@ -123,7 +123,8 @@ namespace BetaBedsAutomation
         }
 
         public static void Close()
-        {      
+        {
+            Driver.Instance.Close();
             Driver.Instance.Quit();
         }
 

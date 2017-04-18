@@ -6,11 +6,6 @@ using BetaBedsAutomation.Enums;
 using BetaBedsAutomation.Data;
 using BetaBedsUITestLogger;
 
-
-
-
-
-
 namespace BetaBedsTests
 {
     [TestFixture]
@@ -26,7 +21,6 @@ namespace BetaBedsTests
             Driver.Initialise(Settings.Default.TestingEnvironment, Settings.Default.SeleniumExecuteLocally, Settings.Default.SeleniumBrowser, Settings.Default.SeleniumRemoteServerURL, Settings.Default.ProxyEnabled, Settings.Default.HttpProxy, Settings.Default.HttpPort);
 
             LoginPage.GoTo((TestEnvironment)Enum.Parse(typeof(TestEnvironment), Settings.Default.TestingEnvironment),Settings.Default.CustomURL);
-
         }
 
 

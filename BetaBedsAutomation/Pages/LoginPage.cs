@@ -65,7 +65,7 @@ namespace BetaBedsAutomation
             }
             Guids.SearchGuid = null;
             Guids.ValuationGUID = null;
-            Guids.pageUrl = null;
+            Guids.pageUrl = PageFunctions.GetUrl();
             
         }
 

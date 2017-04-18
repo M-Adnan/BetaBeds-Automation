@@ -25,18 +25,6 @@ namespace BetaBedsTests.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://192.168.2.35:4444/wd/hub")]
-        public string SeleniumRemoteServerURL {
-            get {
-                return ((string)(this["SeleniumRemoteServerURL"]));
-            }
-            set {
-                this["SeleniumRemoteServerURL"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("52.16.27.130")]
         public string HttpProxy {
             get {
@@ -56,30 +44,6 @@ namespace BetaBedsTests.Properties {
             }
             set {
                 this["HttpPort"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Dev")]
-        public string TestingEnvironment {
-            get {
-                return ((string)(this["TestingEnvironment"]));
-            }
-            set {
-                this["TestingEnvironment"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool SeleniumExecuteLocally {
-            get {
-                return ((bool)(this["SeleniumExecuteLocally"]));
-            }
-            set {
-                this["SeleniumExecuteLocally"] = value;
             }
         }
         
@@ -109,7 +73,43 @@ namespace BetaBedsTests.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://10.0.1.55:4444/wd/hub")]
+        public string SeleniumRemoteServerURL {
+            get {
+                return ((string)(this["SeleniumRemoteServerURL"]));
+            }
+            set {
+                this["SeleniumRemoteServerURL"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("QA")]
+        public string TestingEnvironment {
+            get {
+                return ((string)(this["TestingEnvironment"]));
+            }
+            set {
+                this["TestingEnvironment"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool SeleniumExecuteLocally {
+            get {
+                return ((bool)(this["SeleniumExecuteLocally"]));
+            }
+            set {
+                this["SeleniumExecuteLocally"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool ProxyEnabled {
             get {
                 return ((bool)(this["ProxyEnabled"]));
